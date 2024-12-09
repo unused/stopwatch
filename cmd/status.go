@@ -16,10 +16,11 @@ tasks`,
 		if err != nil {
 			return err
 		}
-		return src.PrintDays(days, 1)
+		return src.PrintDays(days, 1, format)
 	},
 }
 
 func init() {
+	statusCmd.Flags().StringVarP(&format, "format", "f", "", "Output format")
 	rootCmd.AddCommand(statusCmd)
 }

@@ -12,7 +12,7 @@ test:
 
 .PHONY: run
 run:
-	go run main.go --file tmp/stpw.txt $(ARGS)
+	@go run main.go --file tmp/stpw.txt $(ARGS)
 
 .PHONY: clean
 clean:

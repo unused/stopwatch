@@ -8,6 +8,9 @@ import (
 
 var srcFile string
 
+// used by some commands to format the output
+var format string
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "stpw",

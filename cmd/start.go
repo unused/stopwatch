@@ -15,6 +15,7 @@ var startCmd = &cobra.Command{
 	Short: "Start a new task",
 	Long: `Start a new task. This command will create a new task and record the
 current time as the start time. Note that #break is a reserved keyword.`,
+	Args: cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		err := src.AppendDate(srcFile)
 		if err != nil {
