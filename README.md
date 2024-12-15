@@ -20,7 +20,7 @@ $ stpw status # daily report
 $ stpw list # a full report of last 5 days
 
 # access duration summaries with different timeframes and filters
-$ stpw list --filter meeting # filter by tag #meeting (wip)
+$ stpw list --filter meeting # filter by tag #meeting
 $ stpw weekly # (wip)
 $ stpw monthly # (wip)
 ```

@@ -11,6 +11,7 @@ type Day struct {
 	Tasks []TimeEntry
 }
 
+// Report returns a report of the day.
 func (d *Day) Report() (string, error) {
 	sum, err := d.DurationSum()
 	if err != nil {
@@ -19,6 +20,7 @@ func (d *Day) Report() (string, error) {
 	return fmt.Sprintf("Date: %s, Duration: %d minutes", d.Date, sum), nil
 }
 
+// DurationSum returns the sum of the durations of the tasks in the day.
 func (d *Day) DurationSum() (int, error) {
 	sum := 0
 	for _, task := range d.Tasks {
@@ -34,25 +36,21 @@ func (d *Day) DurationSum() (int, error) {
 // TimeEntry represents a task with a start time, comment and tags.
 type TimeEntry struct {
 	Start   string
+	EndTime time.Time
 	Comment string
 	Tags    []string
-	Next    *TimeEntry
 }
 
 // Duration returns the duration of the task in minutes.
 func (t *TimeEntry) Duration() (int, error) {
-	if t.Next == nil {
+	if t.EndTime == (time.Time{}) {
 		return 0, nil
 	}
 	current, err := t.StartTime()
 	if err != nil {
 		return 0, err
 	}
-	next, err := t.Next.StartTime()
-	if err != nil {
-		return 0, err
-	}
-	return int(next.Sub(current).Minutes()), nil
+	return int(t.EndTime.Sub(current).Minutes()), nil
 }
 
 // StartTime returns the start time of the task.

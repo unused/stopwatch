@@ -8,7 +8,7 @@ cmd/stpw:
 
 .PHONY: test
 test:
-	go test -v ./...
+	go test ./...
 
 .PHONY: run
 run:
