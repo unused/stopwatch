@@ -1,16 +1,16 @@
 package src
 
 import (
+	_ "embed"
 	"encoding/json"
 	"io"
 	"os"
 	"text/template"
 )
 
-var TextReport = template.Must(template.New("report").Parse(`{{ range .}}Date: {{.Date}}, Duration: {{.DurationSum}} minutes
-{{ range .Tasks}}  Start: {{.Start}}, Duration: {{.Duration}} minutes {{.Comment}}
-{{ end }}
-{{ end }}`))
+//go:embed templates/report.txt
+var TextReportContent string
+var TextReport = template.Must(template.New("report").Parse(TextReportContent))
 
 // PrintDays prints the last n days to the standard output.
 func PrintDays(days []Day, n int, format string) error {

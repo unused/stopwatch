@@ -12,7 +12,7 @@ var taskRegex = regexp.MustCompile(`^\s+(\d{2}:\d{2})\s+`)
 var commentRegex = regexp.MustCompile(`^\s*\d{2}:\d{2}\s+(.*)`)
 var tagRegex = regexp.MustCompile(`#(\w+)`)
 
-// Day represents a single day of tasks.
+// ReadFile reads file and returns a slice of days.
 func ReadFile(filename string) ([]Day, error) {
 	file, err := os.Open(filename)
 	if err != nil {
@@ -35,7 +35,7 @@ func ReadFile(filename string) ([]Day, error) {
 			currentDay = Day{Date: line}
 		} else if taskRegex.MatchString(line) {
 			ParseTaskLine(line, &currentDay)
-		}
+		} // else ignore content
 	}
 
 	// Add the last day
@@ -47,11 +47,11 @@ func ReadFile(filename string) ([]Day, error) {
 }
 
 // ParseTaskLine parses a line of text and adds a task to the current day.
-func ParseTaskLine(line string, currentDay *Day) {
+func ParseTaskLine(line string, currentDay *Day) error {
 	// Extract time
 	timeMatches := taskRegex.FindStringSubmatch(line)
 	if timeMatches == nil {
-		return
+		return nil
 	}
 	start := timeMatches[1]
 
@@ -70,7 +70,12 @@ func ParseTaskLine(line string, currentDay *Day) {
 	}
 	currentTask := NewTask(start, comment, tagStrings)
 	if len(currentDay.Tasks) > 0 {
-		currentDay.Tasks[len(currentDay.Tasks)-1].Next = &currentTask
+		startTime, err := currentTask.StartTime()
+		if err != nil {
+			return err
+		}
+		currentDay.Tasks[len(currentDay.Tasks)-1].EndTime = startTime
 	}
 	currentDay.Tasks = append(currentDay.Tasks, currentTask)
+	return nil
 }

@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"strings"
+
 	"github.com/spf13/cobra"
 	"github.com/unused/stopwatch/src"
 )
@@ -12,7 +14,14 @@ var listCmd = &cobra.Command{
 	Long: `Print the list of the last five days. This includes the date and all
 tasks`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		days, err := src.ReadFile(srcFile)
+		store, err := src.LoadStore(srcFile)
+		if err != nil {
+			return err
+		}
+		if filter != "" {
+			store.Filter(strings.Split(filter, ",")...)
+		}
+		days, err := store.Days()
 		if err != nil {
 			return err
 		}
@@ -22,5 +31,6 @@ tasks`,
 
 func init() {
 	listCmd.Flags().StringVarP(&format, "format", "f", "", "Output format")
+	listCmd.Flags().StringVarP(&filter, "filter", "", "", "Filter by tags")
 	rootCmd.AddCommand(listCmd)
 }

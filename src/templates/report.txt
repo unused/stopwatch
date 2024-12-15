@@ -1,0 +1,4 @@
+{{ range .}}Date: {{.Date}}, Duration: {{.DurationSum}} minutes
+{{ range .Tasks}}  Start: {{.Start}}, Duration: {{.Duration}} minutes {{.Comment}}
+{{ end }}
+{{ end }}

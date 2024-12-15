@@ -1,6 +1,8 @@
 package main
 
-import "github.com/unused/stopwatch/cmd"
+import (
+	"github.com/unused/stopwatch/cmd"
+)
 
 func main() {
 	Run()
